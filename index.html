@@ -2,29 +2,34 @@
 <html lang="en">
 <head>
     <title></title>
+    <link rel="stylesheet"  href="css/main_styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
 
 	<div class="body-container">
 
 		<!-- page header -->
-		<head class="page-header">
-
-		</head>
+		<header class="page-header">
+            <h1>HEADER</h1>
+		</header>
 		<!-- end of page header -->
 
 		<!-- page content -->
-		<div class="page-content">
-			<div class="sidebar">
-                <p>search</p>
-                <hr>
-                <input type="text" placeholder="search ...">
-                <ul data-bind="foreach: location">
-                    <li data-bind="text: name"></li>
-                </ul>
-            </div>
+        <div class="sidebar">
 
-            <div class="map">
+            <p>search</p>
+            <hr>
+            <input type="text" placeholder="search ...">
+            <ul data-bind="foreach: location">
+                <li data-bind="text: name"></li>
+            </ul>
+
+        </div><div
+        class="page-content">
+
+			<div class="map">
                 <!-- google maps script should go here -->
             </div>
 		</div>

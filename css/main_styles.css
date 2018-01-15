@@ -1,1 +1,69 @@
 /*  ******** these are the main styles applied to page ********* */
+
+/* --------- Globals ----------- */
+
+body{
+    background-color: #ffffff;
+    font-family: Helvetica , arial , sans-serif ;
+    font-weight: normal;
+    width: 100% ;
+    font-size:20px;
+    margin:0px;
+    padding: 0px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+
+/* Responsive basic styles */
+
+img,embed,object,video{
+    max-width: 100%
+}
+
+nav a,button {
+    min-width: 40px;
+    min-height: 40px;
+}
+
+
+/* ---------- custom globals ---------------- */
+
+.body-container{
+    width: 100%;
+}
+
+
+.page-header{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: #ccc;
+}
+
+
+
+.sidebar{
+    display: inline-block;
+    width: 25%;
+    height: 100vh - 50px;
+    background-color: #123;
+}
+
+
+.page-content{
+    width: 75%;
+    height: 100%;
+    display: inline-block;
+}
+
+
+
+.map{
+    display: inline-block;
+    width: 75%;
+    background-color: 0;
+}
