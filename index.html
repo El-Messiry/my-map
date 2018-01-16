@@ -12,7 +12,10 @@
 
 		<!-- page header -->
 		<header class="page-header">
-            <h1>HEADER</h1>
+            <div class="nav-icon" data-bind="click: toggle_nav_icon" >
+                <div class="hamburger">
+                </div>
+            </div>
 		</header>
 		<!-- end of page header -->
 
@@ -21,7 +24,10 @@
 
             <p>search</p>
             <hr>
-            <input type="text" placeholder="search ...">
+            <input
+            type="text"
+            class="search-box"
+            placeholder=" search ...">
             <ul data-bind="foreach: location">
                 <li data-bind="text: name"></li>
             </ul>
