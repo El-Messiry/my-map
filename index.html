@@ -16,6 +16,11 @@
                 <div class="hamburger">
                 </div>
             </div>
+            <div class="header-title-container">
+                <p>
+                    My Neighbourhood Map
+                </p>
+            </div>
 		</header>
 		<!-- end of page header -->
 
@@ -24,19 +29,19 @@
 
             <p>search</p>
             <hr>
-            <input
-            type="text"
-            class="search-box"
-            placeholder=" search ...">
+            <input type="text" class="search-box" placeholder=" what are you looking for ?">
             <ul data-bind="foreach: location">
                 <li data-bind="text: name"></li>
             </ul>
 
-        </div><div
-        class="page-content">
-
-			<div class="map">
-                <!-- google maps script should go here -->
+        </div><div class="page-content">
+            <div class="map-container">
+                <div class="map">
+                    <p style="text-align: center; margin-top:100px;">
+                        map should go here
+                    </p>
+                    <!-- google maps script should go here -->
+                </div>
             </div>
 		</div>
 		<!-- end of page content -->

@@ -10,6 +10,7 @@ body{
     font-size:20px;
     margin:0px;
     padding: 0px;
+
 }
 
 ::-webkit-scrollbar {
@@ -38,11 +39,33 @@ nav a,button {
 }
 
 /* header elements */
+
+.header-title-container{
+    text-align: right;
+    float: right;
+    width: 80%;
+    margin-right: 4%;
+    font-size: 2em;
+    color: #fff;
+    text-shadow: 0px 1px 7px #8c8c8c;
+
+}
+
+.header-title-container p{
+    font-family: arial;
+    margin: 0;
+    margin-top: 11px;
+}
+
 .page-header{
     display: block;
     height: 70px;
     width: 100%;
-    background-color: #ccc;
+    background-color: #202020;
+    -webkit-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.75);
+
 }
 
 .page-header h1 {
@@ -51,14 +74,14 @@ nav a,button {
 
 /* nav items - menu - hamburger */
 .nav-icon{
-
     width: 50px;
     height: 70px;
-    margin-left: 10px;
+    margin-left: 20px;
     cursor: pointer;
     position: absolute;
-
 }
+
+
 
 .hamburger{
     width: 100%;
@@ -69,7 +92,7 @@ nav a,button {
     bottom: 50%;
     margin: auto;
     background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    box-shadow: 0 2px 4px rgb(140, 140, 140);
     transition: .5s;
 
 }
@@ -82,7 +105,7 @@ nav a,button {
     height: 5px;
     margin: 0;
     background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    box-shadow: 0 2px 4px rgb(140, 140, 140);
     transition: .5s;
 
 }
@@ -92,6 +115,7 @@ nav a,button {
 .hamburger::before{
     top: -15px;
 }
+
 
 .active-nav-icon .hamburger{
     background: rgba(0, 0, 0, 0);
@@ -115,9 +139,26 @@ nav a,button {
 .sidebar{
     display: inline-block;
     width: 20%;
+    position: absolute;
+    left: -20%;
     height: calc(100vh - 70px);
-    background-color: #123;
+    background-color: #2d2d2d;
+    transition: 0.5s;
 
+}
+
+.sidebar.active-side-bar{
+    left: 0%;
+    transition: 0.5s;
+    -webkit-box-shadow: 4px 1px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 4px 1px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 4px 1px 5px 0px rgba(0,0,0,0.75);
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    -moz-border-radius-bottomright: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .sidebar p{
@@ -127,8 +168,19 @@ nav a,button {
     color: #fff;
 }
 
+.sidebar hr{
+    width: 90%;
+    margin: auto;
+    display: block;
+}
+
+.sidebar input{
+    padding: 5px;
+    font-size: 18px;
+}
+
 .search-box{
-    width: 95%;
+    width: 80%;
     height: 30px;
     margin: auto;
     margin-top: 15px;
@@ -136,6 +188,7 @@ nav a,button {
     border-radius: 5px;
     border-width: 0.5px;
     border-color: inherit;
+    background-color: #e4e4e4;
 }
 
 .search-box p{
@@ -146,20 +199,39 @@ input.search-box:focus{
     outline: none !important;
     border:1px solid inherit;
     box-shadow: 0 0 10px #fff;
+    background-color: #fff;
 }
+
 
 
 
 .page-content{
-    width: 80%;
-    height: 100%;
+    width: 100%;
+    height: calc(100vh - 70px);
     display: inline-block;
+    background-color: #ccc;
+    transition: 0.5s;
 }
 
+.page-content.active-side-bar{
+    width: 82%;
+    margin-left: 18%;
+    display: inline-block;
+    transition: 0.5s;
+}
 
+.map-container{
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    margin-left: 11%;
+    margin-top: 50px;
+    display: block;
+    background-color: #fff;
+}
 
 .map{
     display: inline-block;
-    width: 75%;
+    width: 100%;
     background-color: 0;
 }
