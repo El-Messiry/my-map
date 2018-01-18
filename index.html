@@ -26,7 +26,8 @@
 
 		<!-- page content -->
         <div class="sidebar">
-
+            <button id="map-btn" class="showlist-btn" data-bind="click: toggle_map, text: map_btn_txt">
+            </button>
             <p>search</p>
             <hr>
             <input type="text" class="search-box" placeholder=" what are you looking for ?">
@@ -36,11 +37,13 @@
 
         </div><div class="page-content">
             <div class="map-container">
-                <div class="map">
-                    <p style="text-align: center; margin-top:100px;">
-                        map should go here
+                <div id="map">
+                    <script src="js/app/google_map.js"></script>
+                </div>
+                <div id="map-caption">
+                    <p>
+                        fifth settelment, new cairo, Egypt (EG)
                     </p>
-                    <!-- google maps script should go here -->
                 </div>
             </div>
 		</div>
@@ -55,8 +58,11 @@
 	</div>
 
 	<!-- ******************loading scripts ******************* -->
-    <script src="js/libs/knockout/knockout-3.4.2.js"></script>
-	<script src="js/libs/jquery/jquery-3.2.1.js"></script>
+    <script src="js/app/libs/knockout/knockout-3.4.2.js"></script>
+	<script src="js/app/libs/jquery/jquery-3.2.1.js"></script>
 	<script src="js/app/app.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYqkIduPspaGjIE8_kQv2j61PyQuo3Kz8&callback=initMap">
+    </script>
 </body>
 </html>
