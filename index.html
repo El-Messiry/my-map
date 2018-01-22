@@ -26,16 +26,37 @@
 
 		<!-- page content -->
         <div class="sidebar">
-            <button id="map-btn" class="showlist-btn" data-bind="click: toggle_map, text: map_btn_txt">
-            </button>
+            <div class="tools-container">
+                <div class="icon-container">
+                    <div class="icon tooltip">
+                        <img id="map-btn"
+                         class="icon-img"
+                         src="imgs/places_icon.png"
+                         data-bind="click: toggle_map" >
+                         <span class="tooltiptext">
+                            show places
+                         </span>
+                    </div>
+                </div><div class="icon-container">
+                    <div class="icon tooltip">
+                        <img id="toggle-drawing"
+                        src="imgs/drawing_icon.png"
+                        class="icon-img"
+                        data-bind="click: toggle_map" >
+                        <span class="tooltiptext">
+                           draw your area
+                        </span>
+                    </div>
+                </div>
+            </div>
             <p>search</p>
             <hr>
             <input type="text" class="search-box" placeholder=" what are you looking for ?">
             <ul data-bind="foreach: location">
                 <li data-bind="text: name"></li>
             </ul>
-
-        </div><div class="page-content">
+        </div>
+        <div class="page-content">
             <div class="map-container">
                 <div id="map">
                     <script src="js/app/google_map.js"></script>
@@ -62,7 +83,7 @@
 	<script src="js/app/libs/jquery/jquery-3.2.1.js"></script>
 	<script src="js/app/app.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYqkIduPspaGjIE8_kQv2j61PyQuo3Kz8&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAYqkIduPspaGjIE8_kQv2j61PyQuo3Kz8&callback=initMap">
     </script>
 </body>
 </html>

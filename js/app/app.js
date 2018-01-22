@@ -24,11 +24,12 @@ function ViewModel() {
 
     self.toggle_map = function(){
         $('#map-btn').toggleClass('active-btn');
-        if (self.map_btn_txt() == btn_txt.hide_txt) {
-            self.map_btn_txt(btn_txt.show_txt);
-        } else {
-            self.map_btn_txt(btn_txt.hide_txt);
-        }
+        $('#toggle-drawing').toggleClass('active-btn');
+        // if (self.map_btn_txt() == btn_txt.hide_txt) {
+        //     self.map_btn_txt(btn_txt.show_txt);
+        // } else {
+        //     self.map_btn_txt(btn_txt.hide_txt);
+        // }
     };
 
 
