@@ -3,6 +3,23 @@ var bool_map_btn = 1;
 // Create a new blank array for all the listing markers.
 var markers = [];
 var polygon = null ;
+var locations = [
+  {title: 'Starbucks Coffee', location: {lat: 30.040973, lng: 31.475741}},
+  {title: 'Cold Stone icecream', location: {lat: 30.040249, lng: 31.475451}},
+  {title: 'Cafe Supreme River walk', location: {lat: 30.037899, lng: 31.475387}},
+  {title: 'The Tap East', location: {lat: 30.045487, lng: 31.476148}},
+  {title: 'Banque Misr', location: {lat: 30.042252, lng: 31.475343}},
+  {title: 'National Bank of Egypt', location: {lat: 30.041997, lng: 31.475568}},
+  {title: 'The Water Way', location: {lat: 30.041517, lng: 31.476905}},
+  {title: 'The Mood cafe', location: {lat: 30.029554, lng: 31.496346}},
+  {title: 'Cafe Supreme Maxim Mall', location: {lat: 30.029266, lng: 31.497097}},
+  {title: 'spinneys', location: {lat: 30.029953, lng: 31.496904}},
+  {title: 'Future University in Cairo (FUE)', location: {lat: 30.027231,lng: 31.491669}},
+  {title: 'American University in Cairo (AUC)', location: {lat: 30.023942,lng: 31.497278}},
+  {title: 'Dunkin Donuts Galeria Mall', location: {lat: 30.025047, lng: 31.489843}},
+  {title: 'Golds GYM', location: {lat: 30.024991, lng: 31.483760}}
+
+];
 
 function initMap() {
     // Constructor creates a new map - only center and zoom are required.
@@ -227,16 +244,9 @@ function initMap() {
             ]
         },
         {
-            "featureType": "road.highway",
-            "elementType": "geometry.fill",
-            "stylers": [
-                {
-                    "color": "#4c3a0d"
-                },
-                {
-                    "lightness": 17
-                }
-            ]
+            featureType: 'road.highway',
+            elementType: 'geometry',
+            stylers: [{color: '#746855'}]
         },
         {
             "featureType": "road.highway",
@@ -273,7 +283,7 @@ function initMap() {
                     "visibility": "on"
                 },
                 {
-                    "color": "#514646"
+                    "color": "#cccccc"
                 }
             ]
         },
@@ -398,18 +408,11 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 30.042046, lng: 31.475387},
       zoom: 15 ,
-      styles: style3,
+      styles: style2,
       mapTypeControl: false
     });
 
-    var locations = [
-      {title: 'Starbucks Coffee', location: {lat: 30.040973, lng: 31.475741}},
-      {title: 'Cold Stone icecream', location: {lat: 30.040249, lng: 31.475451}},
-      {title: 'Cafe Supreme', location: {lat: 30.037899, lng: 31.475387}},
-      {title: 'The Tap East', location: {lat: 30.045487, lng: 31.476148}},
-      {title: 'Banque Misr', location: {lat: 30.042252, lng: 31.475343}},
-      {title: 'National Bank of Egypt', location: {lat: 30.041997, lng: 31.475568}}
-    ];
+
 
     var largeInfowindow = new google.maps.InfoWindow();
     // Style the markers a bit. This will be our listing marker icon.
@@ -499,53 +502,51 @@ function initMap() {
 
 }
 
-
-
 // This function populates the infowindow when the marker is clicked.
 // We'll only allow one infowindow which will open at the marker that is clicked,
 // and populate based on that markers position.
 function populateInfoWindow(marker, infowindow) {
-    // Check to make sure the infowindow is not already opened on this marker.
-    if (infowindow.marker != marker) {
-     infowindow.marker = marker;
-     infowindow.setContent('<div>' + marker.title + '</div>');
-     infowindow.open(map, marker);
-     // Make sure the marker property is cleared if the infowindow is closed.
-     infowindow.addListener('closeclick', function() {
-       infowindow.marker = null;
-     });
-
-    // code to append street view to info window.
-
-    function getStreetView(data, status) {
-      if (status == google.maps.StreetViewStatus.OK) {
-        var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(
-          nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-          var panoramaOptions = {
-            position: nearStreetViewLocation,
-            pov: {
-              heading: heading,
-              pitch: 30
-            }
-          };
-        var panorama = new google.maps.StreetViewPanorama(
-          document.getElementById('pano'), panoramaOptions);
-      } else {
-        infowindow.setContent('<div>' + marker.title + '</div>' +
-          '<div>No Street View Found</div>');
-      }
-    }
-    // Use streetview service to get the closest streetview image within
-    // 50 meters of the markers position
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-    // Open the infowindow on the correct marker.
-    infowindow.open(map, marker);
-
-    }
-}
-
+       // Check to make sure the infowindow is not already opened on this marker.
+       if (infowindow.marker != marker) {
+         // Clear the infowindow content to give the streetview time to load.
+         infowindow.setContent('');
+         infowindow.marker = marker;
+         // Make sure the marker property is cleared if the infowindow is closed.
+         infowindow.addListener('closeclick', function() {
+           infowindow.marker = null;
+         });
+         var streetViewService = new google.maps.StreetViewService();
+         var radius = 50;
+         // In case the status is OK, which means the pano was found, compute the
+         // position of the streetview image, then calculate the heading, then get a
+         // panorama from that and set the options
+         function getStreetView(data, status) {
+           if (status == google.maps.StreetViewStatus.OK) {
+             var nearStreetViewLocation = data.location.latLng;
+             var heading = google.maps.geometry.spherical.computeHeading(
+               nearStreetViewLocation, marker.position);
+               infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+               var panoramaOptions = {
+                 position: nearStreetViewLocation,
+                 pov: {
+                   heading: heading,
+                   pitch: 30
+                 }
+               };
+             var panorama = new google.maps.StreetViewPanorama(
+               document.getElementById('pano'), panoramaOptions);
+           } else {
+             infowindow.setContent('<div>' + marker.title + '</div>' +
+               '<div>No Street View Found</div>');
+           }
+         }
+         // Use streetview service to get the closest streetview image within
+         // 50 meters of the markers position
+         streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+         // Open the infowindow on the correct marker.
+         infowindow.open(map, marker);
+       }
+   }
 
 
 // This function will loop through the markers array and display them all.
@@ -566,7 +567,6 @@ function hideListings() {
     }
 }
 
-
 // This function takes in a COLOR, and then creates a new marker
 // icon of that color. The icon will be 21 px wide by 34 high, have an origin
 // of 0, 0 and be anchored at 10, 34).
@@ -581,7 +581,6 @@ function makeMarkerIcon(markerColor) {
     return markerImage;
 }
 
-
 // This shows and hides (respectively) the drawing options.
 function toggleDrawing(drawingManager) {
   if (drawingManager.map) {
@@ -594,7 +593,6 @@ function toggleDrawing(drawingManager) {
     drawingManager.setMap(map);
   }
 }
-
 
 // This function hides all markers outside the polygon,
 // and shows only the ones within it. This is so that the

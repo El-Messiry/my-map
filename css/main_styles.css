@@ -91,6 +91,7 @@ button{
 /*-------------------  Header Content  ---------------------*/
 /*----------------------------------------------------------*/
 
+/* header elements */
 .header-title-container{
     text-align: right;
     float: right;
@@ -384,84 +385,57 @@ input.search-box{
 
 @media screen and (max-width: 1500px) {
 
-/* sidebar elements */
-.sidebar{
-    width: 30%;
-    left: -30%;
-    z-index: 3;
-}
-
-.tools-container{
-    margin-bottom: 0;
-    height: 70px;
-}
-.icon{
-    width: 60px;
-    height: 60px;
-}
-.icon-img{
-    width: 35px;
-    height: 35px;
-    padding-top: 10px;
-}
-
-.tooltip .tooltiptext {
-    width: 120px;
-    margin-left: -60px;
-    font-size: 15px;
-}
-
-input.search-box{
-    font-size: 15px;
-}
-
-
-.page-content.active-side-bar{
-    width: 72%;
-    margin-left: 28%;
-}
-
-.map-container{
-    margin-top: 10px;
-    width: 90%;
-    height: 90%;
-}
-
-
-.map-container.active-side-bar{
-    width: 90%;
-    height: 90%;
-
-}
-
-}
-
-/*@media only screen and (max-width: 760px){
-
+    /* sidebar elements */
     .sidebar{
-        width: 50%;
-        left: -50%;
+        width: 30%;
+        left: -30%;
         z-index: 3;
     }
 
+    .tools-container{
+        margin-bottom: 0;
+        height: 70px;
+    }
+    .icon{
+        width: 60px;
+        height: 60px;
+    }
+    .icon-img{
+        width: 35px;
+        height: 35px;
+        padding-top: 10px;
+    }
+
+    .tooltip .tooltiptext {
+        width: 120px;
+        margin-left: -60px;
+        font-size: 15px;
+    }
+
+    input.search-box{
+        font-size: 15px;
+    }
+
+
     .page-content.active-side-bar{
-        width: 100%;
-        margin-left: 0%;
+        width: 72%;
+        margin-left: 28%;
     }
 
     .map-container{
-        margin: 0;
-        width: 100%;
+        margin-top: 10px;
+        width: 90%;
         height: 90%;
     }
+
 
     .map-container.active-side-bar{
-        width: 100%;
+        width: 90%;
         height: 90%;
-        z-index: 1;
+
     }
 
-}*/
+}
 
 @media only screen and (max-width: 900px){
     /* sidebar elements */
@@ -489,7 +463,6 @@ input.search-box{
     }
 
 }
-
 
 @media only screen and (max-width: 650px){
 
