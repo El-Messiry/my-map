@@ -4,20 +4,20 @@ var bool_map_btn = 0;
 var markers = [];
 var polygon = null ;
 var locations = [
-  {title: 'Starbucks Coffee', location: {lat: 30.040973, lng: 31.475741}},
-  {title: 'Cold Stone icecream', location: {lat: 30.040249, lng: 31.475451}},
-  {title: 'Cafe Supreme River walk', location: {lat: 30.037899, lng: 31.475387}},
-  {title: 'The Tap East', location: {lat: 30.045487, lng: 31.476148}},
-  {title: 'Banque Misr', location: {lat: 30.042252, lng: 31.475343}},
-  {title: 'National Bank of Egypt', location: {lat: 30.041997, lng: 31.475568}},
-  {title: 'The Water Way', location: {lat: 30.041517, lng: 31.476905}},
-  {title: 'The Mood cafe', location: {lat: 30.029554, lng: 31.496346}},
-  {title: 'Cafe Supreme Maxim Mall', location: {lat: 30.029266, lng: 31.497097}},
-  {title: 'spinneys', location: {lat: 30.029953, lng: 31.496904}},
-  {title: 'Future University in Cairo (FUE)', location: {lat: 30.027231,lng: 31.491669}},
-  {title: 'American University in Cairo (AUC)', location: {lat: 30.023942,lng: 31.497278}},
-  {title: 'Dunkin Donuts Galeria Mall', location: {lat: 30.025047, lng: 31.489843}},
-  {title: 'Golds GYM', location: {lat: 30.024991, lng: 31.483760}}
+  {index:0 ,title: 'Starbucks Coffee', location: {lat: 30.040973, lng: 31.475741}},
+  {index:1 ,title: 'Cold Stone icecream', location: {lat: 30.040249, lng: 31.475451}},
+  {index:2 ,title: 'Cafe Supreme River walk', location: {lat: 30.037899, lng: 31.475387}},
+  {index:3 ,title: 'The Tap East', location: {lat: 30.045487, lng: 31.476148}},
+  {index:4 ,title: 'Banque Misr', location: {lat: 30.042252, lng: 31.475343}},
+  {index:5 ,title: 'National Bank of Egypt', location: {lat: 30.041997, lng: 31.475568}},
+  {index:6 ,title: 'The Water Way', location: {lat: 30.041517, lng: 31.476905}},
+  {index:7 ,title: 'The Mood cafe', location: {lat: 30.029554, lng: 31.496346}},
+  {index:8 ,title: 'Cafe Supreme Maxim Mall', location: {lat: 30.029266, lng: 31.497097}},
+  {index:9 ,title: 'spinneys', location: {lat: 30.029953, lng: 31.496904}},
+  {index:10 ,title: 'Future University in Cairo (FUE)', location: {lat: 30.027231,lng: 31.491669}},
+  {index:11 ,title: 'American University in Cairo (AUC)', location: {lat: 30.023942,lng: 31.497278}},
+  {index:12 ,title: 'Dunkin Donuts Galeria Mall', location: {lat: 30.025047, lng: 31.489843}},
+  {index:13 ,title: 'Golds GYM', location: {lat: 30.024991, lng: 31.483760}}
 ];
 
 function initMap() {
@@ -560,9 +560,9 @@ function showListings() {
     map.fitBounds(bounds);
 }
 
-function showList(i){
+function showList(loc){
     // Extend the boundaries of the map for each marker and display the marker
-    markers[i].setMap(map);
+    markers[loc.index].setMap(map);
 }
 
 // This function will loop through the listings and hide them all.
@@ -673,13 +673,13 @@ function ViewModel() {
             var inputText = self.location_txt();
             var location = locations[i] ;
             if(location.title.toLowerCase() == inputText.toLowerCase()){
-                showList(i);
+                showList(location);
                 result_locations = [] ;
                 result_locations.push(location);
             }
             else{
                 if(location.title.toLowerCase().includes(inputText.toLowerCase())){
-                    showList(i);
+                    showList(location);
                     result_locations.push(location);
                 }
             }
@@ -708,13 +708,12 @@ function ViewModel() {
 
     self.show_place = function(data,event){
         //hideListings();
-        var index = self.mylocations.indexOf(data);
-        if(index == -1){
+        if(data.length == 0 ){
             console.log("nothing found")
         }
         else{
             hideListings();
-            showList(index);
+            showList(data);
         }
     }
 };

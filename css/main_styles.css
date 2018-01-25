@@ -3,12 +3,15 @@
 /*----------------------------------------------------------*/
 /*-------------------  Globals content ---------------------*/
 /*----------------------------------------------------------*/
-
+html{
+    height: 100%;
+}
 body{
     background-color: #ffffff;
     font-family: Helvetica , arial , sans-serif ;
     font-weight: normal;
     width: 100% ;
+    min-height: 100%;
     font-size:20px;
     margin:0px;
     padding: 0px;
@@ -24,7 +27,7 @@ body{
 /* Responsive basic styles */
 
 img,embed,object,video{
-    max-width: 100%
+    max-width: 100%;
 }
 
 a,button {
@@ -44,6 +47,7 @@ button{
 
 .body-container{
     width: 100%;
+    height: 100vh;
 }
 
 /* Tooltip container */
@@ -203,6 +207,9 @@ button{
     background-color: #2d2d2d;
     transition: 0.5s;
 
+    overflow: scroll;
+
+
 }
 
 .sidebar.active-side-bar{
@@ -254,6 +261,7 @@ ul.mylist {
     margin-top: 20px;
     text-align: center;
     color: #666;
+
 }
 
 p.active{
@@ -273,10 +281,17 @@ p.inactive{
     height: 30px;
     padding-top: 8px;
     list-style: none;
-    background-color: #ccc;
+    background-color: #4f4f4f;
+    color : #1e1d1d;
     margin-top: 4px;
     margin-bottom: 3px;
     text-align: center;
+}
+
+li.list-item:hover{
+    background-color: #aaa ;
+    cursor: pointer;
+
 }
 
 /* sidebar icons */
@@ -399,6 +414,7 @@ input.search-box{
 #map-caption p{
     color: #656060;
     text-align: center;
+    margin-top: 0;
 }
 
 #map{
