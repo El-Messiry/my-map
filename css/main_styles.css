@@ -237,6 +237,30 @@ button{
     font-size: 18px;
 }
 
+.mylist-container{
+    display: block;
+    margin: auto;
+    width: 80%;
+}
+
+ul.mylist {
+    padding: 0;
+}
+
+.mylist li{
+    display: block;
+    margin: auto;
+    width: 100%;
+    border-radius: 3px;
+    font-size: 18px;
+    height: 30px;
+    padding-top: 8px;
+    list-style: none;
+    background-color: #ccc;
+    margin-top: 4px;
+    margin-bottom: 3px;
+    text-align: center;
+}
 
 /* sidebar icons */
 .tools-container{

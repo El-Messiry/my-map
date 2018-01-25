@@ -51,15 +51,24 @@
             </div>
             <p>search</p>
             <hr>
-            <input type="text" class="search-box" placeholder=" what are you looking for ?">
-            <ul data-bind="foreach: location">
-                <li data-bind="text: name"></li>
-            </ul>
+            <input type="text"
+            class="search-box"
+            placeholder=" what are you looking for ?"
+            data-bind = "value: location_txt , event: {keyup: search_listings},
+                            valueUpdate: 'afterkeydown' ">
+            <div class="mylist-container">
+                <ul class="mylist" data-bind="foreach: mylocations">
+                    <li class="list-item"
+                    data-bind="text: title,
+                               click: $root.show_place,
+                               enterkey: $root.show_place"></li>
+                </ul>
+            </div>
+
         </div>
         <div class="page-content">
             <div class="map-container">
                 <div id="map">
-                    <script src="js/app/google_map.js"></script>
                 </div>
                 <div id="map-caption">
                     <p>
