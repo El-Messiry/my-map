@@ -561,7 +561,6 @@ function showListings() {
 }
 
 function showList(i){
-    hideListings();
     // Extend the boundaries of the map for each marker and display the marker
     markers[i].setMap(map);
 }
@@ -666,20 +665,44 @@ function ViewModel() {
     // if user hit enter button it executes the desired locations
     // if location is missing a letter it wil show error
     self.search_listings = function(){
-        //hideListings();
+        hideListings();
+        var result_locations = [];
+
+
         for(var i=0 ;i < locations.length ; i++){
-            if(locations[i].title== self.location_txt()){
+            var inputText = self.location_txt();
+            var location = locations[i] ;
+            if(location.title.toLowerCase() == inputText.toLowerCase()){
                 showList(i);
+                result_locations = [] ;
+                result_locations.push(location);
             }
             else{
-                mytitle = locations[i].title ;
-                if(mytitle.includes(self.location_txt())){
+                if(location.title.toLowerCase().includes(inputText.toLowerCase())){
                     showList(i);
-                    result = boldString(mytitle,self.location_txt());
-                    console.log(result);
+                    result_locations.push(location);
                 }
             }
         }
+
+        if(result_locations.length == 0){
+            $('.no-location').addClass('active');
+            $('.no-location').removeClass('inactive');
+        }
+        else{
+            $('.no-location').removeClass('active');
+            $('.no-location').addClass('inactive');
+        }
+
+
+        if(self.location_txt()=='' || self.location_txt().length == 0){
+            self.mylocations(locations);
+            showListings();
+        }
+
+        self.mylocations(result_locations);
+
+        console.log(result_locations);
     }
 
 
@@ -687,9 +710,10 @@ function ViewModel() {
         //hideListings();
         var index = self.mylocations.indexOf(data);
         if(index == -1){
-
+            console.log("nothing found")
         }
         else{
+            hideListings();
             showList(index);
         }
     }

@@ -57,11 +57,15 @@
             data-bind = "value: location_txt , event: {keyup: search_listings},
                             valueUpdate: 'afterkeydown' ">
             <div class="mylist-container">
+                <p class="no-location inactive">
+                    nothing matching your entry
+                </p>
                 <ul class="mylist" data-bind="foreach: mylocations">
                     <li class="list-item"
                     data-bind="text: title,
                                click: $root.show_place,
-                               enterkey: $root.show_place"></li>
+                               enterkey: $root.show_place">
+                    </li>
                 </ul>
             </div>
 

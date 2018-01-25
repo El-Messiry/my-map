@@ -247,6 +247,23 @@ ul.mylist {
     padding: 0;
 }
 
+.mylist-container p{
+    display: block;
+    margin: auto;
+    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+    color: #666;
+}
+
+p.active{
+    display: block;
+}
+
+p.inactive{
+    display: none;
+}
+
 .mylist li{
     display: block;
     margin: auto;
