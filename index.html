@@ -25,6 +25,7 @@
 		<!-- end of page header -->
 
 		<!-- page content -->
+
         <div class="sidebar">
             <div class="tools-container">
                 <div class="icon-container">
@@ -81,7 +82,17 @@
                 </div>
             </div>
 		</div>
-		<!-- end of page content -->
+        <div class="window-container">
+            <div id="close-icon-container">
+                <img data-bind="click: close_window"
+                src="imgs/close_icon.png"
+                id="close-icon">
+            </div>
+            <div class="pano-window">
+
+            </div>
+        </div>
+        <!-- end of page content -->
 
 		<!-- page footer -->
 		<footer class="page-footer">
@@ -96,7 +107,7 @@
 	<script src="js/app/libs/jquery/jquery-3.2.1.js"></script>
 	<script src="js/app/app.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAYqkIduPspaGjIE8_kQv2j61PyQuo3Kz8&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyAYqkIduPspaGjIE8_kQv2j61PyQuo3Kz8&v=3&callback=initMap">
     </script>
 </body>
 </html>

@@ -1,5 +1,21 @@
+/*
+-please note that init map function and others have been copied from
+ the repo of udacity lesson.
+
+-I have modified it to match my code and applyied KnockoutJS allBindings.
+
+-JQuery been used in ( toggleClass - addClass - removeClass ) only.
+
+-Custome Bindings (enterkey) taken from Stackoverflow
+
+-
+
+*/
+
+
+
 var map;
-var bool_map_btn = 0;
+var bool_map_btn = 0; // to toggle show/hide list
 // Create a new blank array for all the listing markers.
 var markers = [];
 var polygon = null ;
@@ -19,6 +35,7 @@ var locations = [
   {index:12 ,title: 'Dunkin Donuts Galeria Mall', location: {lat: 30.025047, lng: 31.489843}},
   {index:13 ,title: 'Golds GYM', location: {lat: 30.024991, lng: 31.483760}}
 ];
+
 
 function initMap() {
     // Constructor creates a new map - only center and zoom are required.
@@ -406,7 +423,7 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 30.042046, lng: 31.475387},
-      zoom: 13 ,
+      zoom: 14 ,
       styles: style2,
       mapTypeControl: false
     });
@@ -502,53 +519,53 @@ function initMap() {
     showListings();
 }
 
-// This function populates the infowindow when the marker is clicked.
-// We'll only allow one infowindow which will open at the marker that is clicked,
-// and populate based on that markers position.
 function populateInfoWindow(marker, infowindow) {
-       // Check to make sure the infowindow is not already opened on this marker.
-       if (infowindow.marker != marker) {
-         // Clear the infowindow content to give the streetview time to load.
-         infowindow.setContent('');
-         infowindow.marker = marker;
-         // Make sure the marker property is cleared if the infowindow is closed.
-         infowindow.addListener('closeclick', function() {
-           infowindow.marker = null;
-         });
-         var streetViewService = new google.maps.StreetViewService();
-         var radius = 50;
-         // In case the status is OK, which means the pano was found, compute the
-         // position of the streetview image, then calculate the heading, then get a
-         // panorama from that and set the options
-         function getStreetView(data, status) {
-           if (status == google.maps.StreetViewStatus.OK) {
-             var nearStreetViewLocation = data.location.latLng;
-             var heading = google.maps.geometry.spherical.computeHeading(
-               nearStreetViewLocation, marker.position);
-               infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-               var panoramaOptions = {
-                 position: nearStreetViewLocation,
-                 pov: {
-                   heading: heading,
-                   pitch: 30
-                 }
-               };
-             var panorama = new google.maps.StreetViewPanorama(
-               document.getElementById('pano'), panoramaOptions);
-           } else {
-             infowindow.setContent('<div>' + marker.title + '</div>' +
-               '<div>No Street View Found</div>');
-           }
-         }
-         // Use streetview service to get the closest streetview image within
-         // 50 meters of the markers position
-         streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-         // Open the infowindow on the correct marker.
-         infowindow.open(map, marker);
-       }
-   }
+        // Check to make sure the infowindow is not already opened on this marker.
+        if (infowindow.marker != marker) {
+          // Clear the infowindow content to give the streetview time to load.
+          infowindow.setContent('');
+          infowindow.marker = marker;
+          // Make sure the marker property is cleared if the infowindow is closed.
+          infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+          });
+          var streetViewService = new google.maps.StreetViewService();
+          var radius = 200;
+          // In case the status is OK, which means the pano was found, compute the
+          // position of the streetview image, then calculate the heading, then get a
+          // panorama from that and set the options
+          function getStreetView(data, status) {
+              console.log(data);
+              console.log(status);
+            if (status == google.maps.StreetViewStatus.OK) {
+              var nearStreetViewLocation = data.location.latLng;
+              var heading = google.maps.geometry.spherical.computeHeading(
+                nearStreetViewLocation, marker.position);
+                infowindow.setContent('<div><strong>' + marker.title + '<strong></div><div id="infowindow-pano"></div>');
+                var panoramaOptions = {
+                  position: nearStreetViewLocation,
+                  pov: {
+                    heading: heading,
+                    pitch: 20
+                  }
+                };
+              var panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('infowindow-pano'), panoramaOptions);
 
 
+            } else {
+              infowindow.setContent('<div>' + marker.title + '</div>' +
+                '<div>No Street View Found</div>');
+            }
+          }
+          // Use streetview service to get the closest streetview image within
+          // 50 meters of the markers position
+          streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+
+          // Open the infowindow on the correct marker.
+          infowindow.open(map, marker);
+        }
+      }
 // This function will loop through the markers array and display them all.
 function showListings() {
     var bounds = new google.maps.LatLngBounds();
@@ -563,6 +580,8 @@ function showListings() {
 function showList(loc){
     // Extend the boundaries of the map for each marker and display the marker
     markers[loc.index].setMap(map);
+    map.setZoom(17);
+    map.panTo(markers[loc.index].position);
 }
 
 // This function will loop through the listings and hide them all.
@@ -588,30 +607,74 @@ function makeMarkerIcon(markerColor) {
 
 // This shows and hides (respectively) the drawing options.
 function toggleDrawing(drawingManager) {
-  if (drawingManager.map) {
-    drawingManager.setMap(null);
-    // In case the user drew anything, get rid of the polygon
-    if (polygon !== null) {
-      polygon.setMap(null);
-    }
-  } else {
+    if (drawingManager.map) {
+        drawingManager.setMap(null);
+        // In case the user drew anything, get rid of the polygon
+        if (polygon !== null) {
+          polygon.setMap(null);
+        }
+    } else {
     drawingManager.setMap(map);
-  }
+    }
 }
 
 // This function hides all markers outside the polygon,
 // and shows only the ones within it. This is so that the
 // user can specify an exact area of search.
 function searchWithinPolygon() {
-  for (var i = 0; i < markers.length; i++) {
-    if (google.maps.geometry.poly.containsLocation(markers[i].position, polygon)) {
-      markers[i].setMap(map);
-    } else {
-      markers[i].setMap(null);
+    for (var i = 0; i < markers.length; i++) {
+        if (google.maps.geometry.poly.containsLocation(markers[i].position, polygon)) {
+          markers[i].setMap(map);
+        } else {
+          markers[i].setMap(null);
+        }
     }
-  }
 }
 
+//function accepts a string to look through and a string to look for
+function boldString(str, find){
+    var re = new RegExp(find, 'g');
+    return str.replace(re, '<b>'+find+'</b>');
+}
+
+
+function open_pano(loc){
+    var marker = markers[loc.index]
+    var streetViewService = new google.maps.StreetViewService();
+    var radius = 200;
+    // In case the status is OK, which means the pano was found, compute the
+    // position of the streetview image, then calculate the heading, then get a
+    // panorama from that and set the options
+    function getStreetView(data, status) {
+        console.log(data);
+        console.log(status);
+      if (status == google.maps.StreetViewStatus.OK) {
+        var nearStreetViewLocation = data.location.latLng;
+        var heading = google.maps.geometry.spherical.computeHeading(
+          nearStreetViewLocation, marker.position);
+          $(".pano-window").html("");
+          $('.pano-window').append('<div class="pano-title"><strong>' + marker.title + '<strong></div><div id="mypano"></div>');
+          var panoramaOptions = {
+            position: nearStreetViewLocation,
+            pov: {
+              heading: heading,
+              pitch: 20
+            }
+          };
+        var panorama = new google.maps.StreetViewPanorama(
+          document.getElementById('mypano'), panoramaOptions);
+
+
+      } else {
+        $('.pano-window').append('<div>' + marker.title + '</div>' +
+          '<div>No Street View Found</div>');
+      }
+    }
+    // Use streetview service to get the closest streetview image within
+    // 50 meters of the markers position
+    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+
+}
 
 /*  *************** KO -> View Model   *******************  */
 /********************************************************/
@@ -631,11 +694,6 @@ ko.bindingHandlers.enterkey = {
     }
 };
 
-//function accepts a string to look through and a string to look for
-function boldString(str, find){
-    var re = new RegExp(find, 'g');
-    return str.replace(re, '<b>'+find+'</b>');
-}
 
 function ViewModel() {
     self = this ;
@@ -668,23 +726,30 @@ function ViewModel() {
         hideListings();
         var result_locations = [];
 
-
+        // loop through all the locations
         for(var i=0 ;i < locations.length ; i++){
+            //store the input text & location in vars
             var inputText = self.location_txt();
             var location = locations[i] ;
+
+            //check to see if input text match the location setEditable
+            //have added toLowerCase() to make it Non case sensetive
             if(location.title.toLowerCase() == inputText.toLowerCase()){
                 showList(location);
-                result_locations = [] ;
-                result_locations.push(location);
+                result_locations = [] ; // remove all locations
+                result_locations.push(location); // put only the requested loc
             }
-            else{
+            else{ // show the locations substrings from text input
                 if(location.title.toLowerCase().includes(inputText.toLowerCase())){
                     showList(location);
-                    result_locations.push(location);
+                    result_locations.push(location); // append to result locations
                 }
             }
         }
 
+        // toggle class active & inactive
+        // to hide "nothing matching your entery" missing
+        // that shown when nothing match input text
         if(result_locations.length == 0){
             $('.no-location').addClass('active');
             $('.no-location').removeClass('inactive');
@@ -694,27 +759,34 @@ function ViewModel() {
             $('.no-location').addClass('inactive');
         }
 
-
+        // check if empty inputText to display all available locations
         if(self.location_txt()=='' || self.location_txt().length == 0){
             self.mylocations(locations);
             showListings();
         }
 
+        //Finally set mylocations observable with the new data.
         self.mylocations(result_locations);
 
-        console.log(result_locations);
     }
 
-
+    // This function runs on clikc/enterkey when applied to location
+    // From the List
     self.show_place = function(data,event){
         //hideListings();
         if(data.length == 0 ){
             console.log("nothing found")
         }
         else{
+            $('.window-container').addClass('show-window');
             hideListings();
             showList(data);
+            open_pano(data);
         }
+    }
+
+    self.close_window = function(){
+        $('.window-container').removeClass('show-window');
     }
 };
 
