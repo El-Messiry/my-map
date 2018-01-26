@@ -8,7 +8,7 @@
 
 -Custome Bindings (enterkey) taken from Stackoverflow
 
--
+-made a new info window to show a wider street view panorama
 
 */
 
@@ -36,7 +36,7 @@ var locations = [
   {index:13 ,title: 'Golds GYM', location: {lat: 30.024991, lng: 31.483760}}
 ];
 
-
+// initialize map
 function initMap() {
     // Constructor creates a new map - only center and zoom are required.
     var styles = [
@@ -519,6 +519,7 @@ function initMap() {
     showListings();
 }
 
+// opens infowindow abov marker
 function populateInfoWindow(marker, infowindow) {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
@@ -566,6 +567,8 @@ function populateInfoWindow(marker, infowindow) {
           infowindow.open(map, marker);
         }
       }
+
+
 // This function will loop through the markers array and display them all.
 function showListings() {
     var bounds = new google.maps.LatLngBounds();
@@ -577,6 +580,7 @@ function showListings() {
     map.fitBounds(bounds);
 }
 
+// shows a specific location on a map
 function showList(loc){
     // Extend the boundaries of the map for each marker and display the marker
     markers[loc.index].setMap(map);
@@ -637,7 +641,7 @@ function boldString(str, find){
     return str.replace(re, '<b>'+find+'</b>');
 }
 
-
+// opens a window for a bigger panaorama.
 function open_pano(loc){
     var marker = markers[loc.index]
     var streetViewService = new google.maps.StreetViewService();
@@ -679,7 +683,9 @@ function open_pano(loc){
 /*  *************** KO -> View Model   *******************  */
 /********************************************************/
 
-// Here's my data model
+
+
+// enterkey custom binding.
 ko.bindingHandlers.enterkey = {
     init: function (element, valueAccessor, allBindings, viewModel) {
         var callback = valueAccessor();
@@ -694,7 +700,7 @@ ko.bindingHandlers.enterkey = {
     }
 };
 
-
+// ViewModel
 function ViewModel() {
     self = this ;
     // toggling nav item hamburger

@@ -47,4 +47,7 @@ also using **Knockout** *JavaScript* framework and adding data bindings to manip
 - Now launch index.html in your browser and enjoy.
 
 
- 
+ - open the hamburger menu and select what ever you want.
+ - in the search box you can type and substring  and options gets narrowed automatically 
+ - on click the Panoramic view will pop up a window feel free to have a look 
+ - exit window then the location on map is displayed.
