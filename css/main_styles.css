@@ -212,9 +212,8 @@ button{
 .window-container.show-window{
     display: block;
     left: 0%;
-    opacity: .8;
+    opacity: .9;
 }
-
 
 
 #close-icon{
@@ -586,6 +585,18 @@ input.search-box{
         z-index: 1;
     }
 
+    #mypano{
+        height: 300px;
+
+    }
+
+    .pano-title{
+        margin-top: 50px;
+        margin-bottom: 50px;
+        font-size: 20px;
+        text-align: center;
+        display: block;
+    }
 }
 
 @media only screen and (max-width: 650px){
