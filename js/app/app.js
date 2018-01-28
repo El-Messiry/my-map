@@ -451,6 +451,7 @@ function initMap() {
 
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
+        /* jshint loopfunc: true */
         // Get the position from the location array.
         var position = locations[i].location;
         var title = locations[i].title;
@@ -465,17 +466,17 @@ function initMap() {
         // Push the marker to our array of markers.
         markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
-        marker.addListener('click', function() { /*jshint loopfunc: true */
+        marker.addListener('click', function() {
             populateInfoWindow( this, largeInfowindow);
-        }); /*jshint loopfunc: true */
+        });
         // Two event listeners - one for mouseover, one for mouseout,
         // to change the colors back and forth.
-        marker.addListener('mouseover', function() {/*jshint loopfunc: true */
+        marker.addListener('mouseover', function() {
             this.setIcon(highlightedIcon);
-            });  /*jshint loopfunc: true */
-        marker.addListener('mouseout', function() {/*jshint loopfunc: true */
+            });
+        marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
-            });  /*jshint loopfunc: true */
+            });
     }
 
     // function that toggles the markers view (show & hide)
