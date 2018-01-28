@@ -465,15 +465,15 @@ function initMap() {
         // Push the marker to our array of markers.
         markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
-        marker.addListener('click', function() {
+        marker.addListener('click', function() { /*jshint loopfunc: true */
             populateInfoWindow( this, largeInfowindow);
         }); /*jshint loopfunc: true */
         // Two event listeners - one for mouseover, one for mouseout,
         // to change the colors back and forth.
-        marker.addListener('mouseover', function() {
+        marker.addListener('mouseover', function() {/*jshint loopfunc: true */
             this.setIcon(highlightedIcon);
             });  /*jshint loopfunc: true */
-        marker.addListener('mouseout', function() {
+        marker.addListener('mouseout', function() {/*jshint loopfunc: true */
             this.setIcon(defaultIcon);
             });  /*jshint loopfunc: true */
     }
