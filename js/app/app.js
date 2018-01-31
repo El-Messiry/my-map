@@ -670,7 +670,7 @@ function boldString(str, find){
 //map error handlling function
 
 function maperror(){
-    var err_msg = "couldn't load map"
+    var err_msg = "couldn't load map";
     $('#map').html('');
     $('#map').append(
         '<div class="maperror">'+
@@ -799,9 +799,9 @@ function ViewModel() {
                     articleStr = articleList[i];
                     var url = 'http://en.wikipedia.org/wiki/' + articleStr;
                     self.wiki_links.push('<li><a href="' + url + '">' + articleStr + '</a></li>');
-                };
+                }
 
-                if (articleList.length == 0){
+                if (articleList.length === 0){
                     self.wiki_links.removeAll();
                     self.wiki_links.push('<li>No results could be found</li>');
                 }
@@ -830,7 +830,7 @@ function ViewModel() {
                 var heading = google.maps.geometry.spherical.computeHeading(
                 nearStreetViewLocation, marker.position);
 
-                self.info_window('<div class="pano-title"><strong>'+ marker.title + '<strong></div><div id="mypano"></div>')
+                self.info_window('<div class="pano-title"><strong>'+ marker.title + '<strong></div><div id="mypano"></div>');
 
                 var panoramaOptions = {
                     position: nearStreetViewLocation,
@@ -849,7 +849,7 @@ function ViewModel() {
         // Use streetview service to get the closest streetview image within
         // 50 meters of the markers position
         streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-    }
+    };
 
     // This function runs on clikc/enterkey when applied to location
     // From the List
