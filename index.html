@@ -88,7 +88,12 @@
                 src="imgs/close_icon.png"
                 id="close-icon">
             </div>
-            <div class="pano-window">
+            <div class="wiki-container">
+                <ul class="wiki-list" data-bind="html: $root.wiki_links">
+
+                </ul>
+            </div>
+            <div class="pano-window" data-bind="html: $root.info_window">
 
             </div>
         </div>
@@ -107,7 +112,8 @@
 	<script src="js/app/libs/jquery/jquery-3.2.1.js"></script>
 	<script src="js/app/app.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyAYqkIduPspaGjIE8_kQv2j61PyQuo3Kz8&v=3&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyAYqkIduPspaGjIE8_kQv2j61PyQuo3Kz8&v=3&callback=initMap"
+    onerror="maperror()">
     </script>
 </body>
 </html>

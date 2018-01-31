@@ -473,6 +473,14 @@ input.search-box{
     box-shadow: 0px 0px 20px 1px rgba(0,0,0,0.75);
 }
 
+
+.maperror{
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+}
+
 #infowindow-pano{
     margin-top: 20px;
     height: 300px;

@@ -477,18 +477,17 @@ function initMap() {
         marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
             });
+        marker.addListener('click', function(){
+            toggleBounce( this);
+        });
+
+        marker.addListener('mouseout', function(){
+            stopBounce( this);
+        });
+
     }
 
-    // function that toggles the markers view (show & hide)
-    document.getElementById('map-btn').addEventListener('click',function(){
-        if (bool_map_btn==1) {
-            bool_map_btn=0;
-            showListings();
-        } else {
-            bool_map_btn=1;
-            hideListings();
-        }
-    });
+
 
     document.getElementById('toggle-drawing').addEventListener('click', function() {
     toggleDrawing(drawingManager);
@@ -518,53 +517,70 @@ function initMap() {
     showListings();
 }
 
+
+function toggleBounce(marker) {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+}
+function startBounce(marker) {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+}
+function stopBounce(marker) {
+    marker.setAnimation(null);
+}
+
 // opens infowindow abov marker
 function populateInfoWindow(marker, infowindow) {
-        // Check to make sure the infowindow is not already opened on this marker.
-        function getStreetView(data, status){
-            if (status == google.maps.StreetViewStatus.OK) {
-                var nearStreetViewLocation = data.location.latLng;
-                var heading = google.maps.geometry.spherical.computeHeading(
-                nearStreetViewLocation, marker.position);
-                infowindow.setContent('<div><strong>' + marker.title + '<strong></div><div id="infowindow-pano"></div>');
-                var panoramaOptions = {
-                    position: nearStreetViewLocation,
-                    pov: {
-                        heading: heading,
-                        pitch: 20
-                    }
-                };
-                var panorama = new google.maps.StreetViewPanorama(
-                document.getElementById('infowindow-pano'), panoramaOptions);
+    // Check to make sure the infowindow is not already opened on this marker.
+    function getStreetView(data, status){
+        // In case the status is OK, which means the pano was found, compute the
+        // position of the streetview image, then calculate the heading, then get a
+        // panorama from that and set the options
+        if (status == google.maps.StreetViewStatus.OK) {
+            var nearStreetViewLocation = data.location.latLng;
+            var heading = google.maps.geometry.spherical.computeHeading(
+            nearStreetViewLocation, marker.position);
+            infowindow.setContent('<div><strong>' + marker.title + '<strong></div><div id="infowindow-pano"></div>');
+            var panoramaOptions = {
+                position: nearStreetViewLocation,
+                pov: {
+                    heading: heading,
+                    pitch: 20
+                }
+            };
+            var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('infowindow-pano'), panoramaOptions);
 
 
-            } else {
-                infowindow.setContent('<div>' + marker.title + '</div>' +
-                '<div>No Street View Found</div>');
-            }
+        } else {
+             infowindow.setContent('<div>' + marker.title + '</div>' +
+             '<div>No Street View Found</div>');
         }
-        if (infowindow.marker != marker) {
-            // Clear the infowindow content to give the streetview time to load.
-            infowindow.setContent('');
-            infowindow.marker = marker;
-            // Make sure the marker property is cleared if the infowindow is closed.
-            infowindow.addListener('closeclick', function() {
-                infowindow.marker = null;
-            });
-            var streetViewService = new google.maps.StreetViewService();
-            var radius = 200;
-            // In case the status is OK, which means the pano was found, compute the
-            // position of the streetview image, then calculate the heading, then get a
-            // panorama from that and set the options
+    }
+    if (infowindow.marker != marker) {
+        // Clear the infowindow content to give the streetview time to load.
+        infowindow.setContent('');
+        infowindow.marker = marker;
+        // Make sure the marker property is cleared if the infowindow is closed.
+        infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+        });
+        var streetViewService = new google.maps.StreetViewService();
+        var radius = 200;
+        // Use streetview service to get the closest streetview image within
+        // 50 meters of the markers position
+        streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
 
-            // Use streetview service to get the closest streetview image within
-            // 50 meters of the markers position
-            streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+        /* implement AJAX request to WikiPedia */
 
-            // Open the infowindow on the correct marker.
-            infowindow.open(map, marker);
-            }
+        // Open the infowindow on the correct marker.
+        infowindow.open(map, marker);
         }
+}
+
 
 
 // This function will loop through the markers array and display them all.
@@ -584,6 +600,7 @@ function showList(loc){
     markers[loc.index].setMap(map);
     map.setZoom(17);
     map.panTo(markers[loc.index].position);
+    startBounce(markers[loc.index]);
 }
 
 // This function will loop through the listings and hide them all.
@@ -639,40 +656,19 @@ function boldString(str, find){
     return str.replace(re, '<b>'+find+'</b>');
 }
 
-// opens a window for a bigger panaorama.
-function open_pano(loc){
-    var marker = markers[loc.index];
-    var streetViewService = new google.maps.StreetViewService();
-    var radius = 200;
-    // In case the status is OK, which means the pano was found, compute the
-    // position of the streetview image, then calculate the heading, then get a
-    // panorama from that and set the options
-    function getStreetView(data, status){
-        if (status == google.maps.StreetViewStatus.OK) {
-            var nearStreetViewLocation = data.location.latLng;
-            var heading = google.maps.geometry.spherical.computeHeading(
-            nearStreetViewLocation, marker.position);
-            $(".pano-window").html("");
-            $('.pano-window').append('<div class="pano-title"><strong>'+ marker.title + '<strong></div><div id="mypano"></div>');
-            var panoramaOptions = {
-                position: nearStreetViewLocation,
-                pov: {
-                    heading: heading,
-                    pitch: 20
-                }
-            };
-            var panorama = new google.maps.StreetViewPanorama(
-            document.getElementById('mypano'), panoramaOptions);
-        } else {
-            $('.pano-window').append('<div>' + marker.title + '</div>' +
-            '<div>No Street View Found</div>');
-        }
-    }
-    // Use streetview service to get the closest streetview image within
-    // 50 meters of the markers position
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+//map error handlling function
 
+function maperror(){
+    var err_msg = "couldn't load map"
+    $('#map').html('');
+    $('#map').append(
+        '<div class="maperror">'+
+        '<strong>' + err_msg + '</strong>'+
+        '</div>');
 }
+
+
+
 
 /*  *************** KO -> View Model   *******************  */
 /********************************************************/
@@ -696,7 +692,7 @@ ko.bindingHandlers.enterkey = {
 
 // ViewModel
 function ViewModel() {
-    self = this ;
+    var self = this ;
     // toggling nav item hamburger
     self.toggle_nav_icon = function(){
         $('.nav-icon').toggleClass('active-nav-icon');
@@ -707,11 +703,13 @@ function ViewModel() {
     self.toggle_map = function(){
         $('#map-btn').toggleClass('active-btn');
         $('#toggle-drawing').toggleClass('active-btn');
-        // if (self.map_btn_txt() == btn_txt.hide_txt) {
-        //     self.map_btn_txt(btn_txt.show_txt);
-        // } else {
-        //     self.map_btn_txt(btn_txt.hide_txt);
-        // }
+        if (bool_map_btn==1) {
+            bool_map_btn=0;
+            showListings();
+        } else {
+            bool_map_btn=1;
+            hideListings();
+        }
     };
 
     self.mylocations = ko.observableArray(locations);
@@ -769,6 +767,69 @@ function ViewModel() {
         self.mylocations(result_locations);
     };
 
+    self.wiki_links = ko.observableArray([]);
+    self.get_wikiArticles = function(data){
+        // load wikipedia data
+        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + data.title + '&format=json&callback=wikiCallback';
+        var wikiRequestTimeout = setTimeout(function(){
+            self.wiki_links.removeAll();
+            self.wiki_links.push("failed to get wikipedia resources");
+        }, 4000);
+
+        $.ajax({
+            url: wikiUrl,
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function( response ) {
+                var articleList = response[1];
+                self.wiki_links.removeAll();
+                for (var i = 0; i < articleList.length; i++) {
+                    articleStr = articleList[i];
+                    var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+                    self.wiki_links.push('<li><a href="' + url + '">' + articleStr + '</a></li>');
+                };
+
+                clearTimeout(wikiRequestTimeout);
+            }
+        });
+    };
+
+    self.info_window = ko.observable("");
+    // opens a window for a bigger panaorama.
+    self.open_pano = function open_pano(loc){
+        var marker = markers[loc.index];
+        var streetViewService = new google.maps.StreetViewService();
+        var radius = 200;
+        // In case the status is OK, which means the pano was found, compute the
+        // position of the streetview image, then calculate the heading, then get a
+        // panorama from that and set the options
+        function getStreetView(data, status){
+            if (status == google.maps.StreetViewStatus.OK) {
+                var nearStreetViewLocation = data.location.latLng;
+                var heading = google.maps.geometry.spherical.computeHeading(
+                nearStreetViewLocation, marker.position);
+
+                self.info_window('<div class="pano-title"><strong>'+ marker.title + '<strong></div><div id="mypano"></div>')
+
+                var panoramaOptions = {
+                    position: nearStreetViewLocation,
+                    pov: {
+                        heading: heading,
+                        pitch: 20
+                    }
+                };
+                var panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('mypano'), panoramaOptions);
+            } else {
+                self.info_window('<div>' + marker.title + '</div>' +
+                '<div>No Street View Found</div>');
+            }
+        }
+        // Use streetview service to get the closest streetview image within
+        // 50 meters of the markers position
+        streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+    }
+
     // This function runs on clikc/enterkey when applied to location
     // From the List
     self.show_place = function(data,event){
@@ -779,7 +840,8 @@ function ViewModel() {
             $('.window-container').addClass('show-window');
             hideListings();
             showList(data);
-            open_pano(data);
+            self.get_wikiArticles(data);
+            self.open_pano(data);
         }
     };
 
