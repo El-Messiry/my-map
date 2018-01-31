@@ -21,7 +21,7 @@ var markers = [];
 var polygon = null ;
 var locations = [
   {index:0 ,title: 'Starbucks Coffee', location: {lat: 30.040973, lng: 31.475741}},
-  {index:1 ,title: 'Cold Stone icecream', location: {lat: 30.040249, lng: 31.475451}},
+  {index:1 ,title: 'Cold Stone', location: {lat: 30.040249, lng: 31.475451}},
   {index:2 ,title: 'Cafe Supreme River walk', location: {lat: 30.037899, lng: 31.475387}},
   {index:3 ,title: 'The Tap East', location: {lat: 30.045487, lng: 31.476148}},
   {index:4 ,title: 'Banque Misr', location: {lat: 30.042252, lng: 31.475343}},
@@ -801,12 +801,17 @@ function ViewModel() {
                     self.wiki_links.push('<li><a href="' + url + '">' + articleStr + '</a></li>');
                 };
 
+                if (articleList.length == 0){
+                    self.wiki_links.removeAll();
+                    self.wiki_links.push('<li>No results could be found</li>');
+                }
                 clearTimeout(wikiRequestTimeout);
             },
             error: function() {
                 self.wiki_links.removeAll();
                 self.wiki_links.push('<li>error while loading wiki Links</li>');
-            }
+            },
+
         });
     };
 
