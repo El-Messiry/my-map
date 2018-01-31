@@ -606,11 +606,12 @@ input.search-box{
 
 }
 
+
 @media only screen and (max-width: 900px){
-    /* sidebar elements */
+
     .sidebar{
-        width: 50%;
-        left: -50%;
+        width: 100%;
+        left: -100%;
         z-index: 3;
     }
 
@@ -623,6 +624,9 @@ input.search-box{
         margin: 0;
         width: 100%;
         height: 90%;
+    }
+    #nfowindow-pano{
+        height: 400px;
     }
 
     .map-container.active-side-bar{
@@ -642,15 +646,6 @@ input.search-box{
         font-size: 20px;
         text-align: center;
         display: block;
-    }
-}
-
-@media only screen and (max-width: 650px){
-
-    .sidebar{
-        width: 100%;
-        left: -100%;
-        z-index: 3;
     }
 
     .tooltip .tooltiptext {

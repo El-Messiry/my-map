@@ -595,20 +595,16 @@ function showListings() {
 }
 
 function fit_map(loc){
-    var bounds = new google.maps.LatLngBounds();
-        // Extend the boundaries of the map for each marker and display the marker
-    for (var i = 0; i < loc.length; i++) {
-     markers[loc[i].index].setMap(map);
-     bounds.extend(markers[loc[i].index].position);
+    hideListings();
+    for(var i=0;i<loc.length;i++){
+        markers[loc[i].index].setVisible(true);
     }
-    map.fitBounds(bounds);
-
 }
 
 // shows a specific location on a map
 function showList(loc){
     // Extend the boundaries of the map for each marker and display the marker
-    markers[loc.index].setMap(map);
+    markers[loc.index].setVisible(true);
     map.setZoom(17);
     map.panTo(markers[loc.index].position);
 
@@ -617,7 +613,7 @@ function showList(loc){
 // This function will loop through the listings and hide them all.
 function hideListings() {
     for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
+    markers[i].setVisible(false);
     }
 }
 
@@ -750,7 +746,6 @@ function ViewModel() {
             }
             else{ // show the locations substrings from text input
                 if(location.title.toLowerCase().includes(inputText.toLowerCase())){
-                    showList(location);
                     result_locations.push(location); // append to result locations
                 }
             }
