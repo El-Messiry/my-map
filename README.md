@@ -6,6 +6,7 @@
 This is Udacity 5th project of the Full Stack Web development Nano degree.
 creating a map displaying places in my area and providing street view imagery through google's APIs.
 also using **Knockout** *JavaScript* framework and adding data bindings to manipulate the DOM.
+and finally using some 3rd party API using **`(AJAX`**/**`getJSON`**)
 
 <hr>
 
