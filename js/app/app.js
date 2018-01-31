@@ -478,12 +478,11 @@ function initMap() {
             this.setIcon(defaultIcon);
             });
         marker.addListener('click', function(){
-            toggleBounce( this);
+            startBounce(this);
+
+
         });
 
-        marker.addListener('mouseout', function(){
-            stopBounce( this);
-        });
 
     }
 
@@ -518,19 +517,14 @@ function initMap() {
 }
 
 
-function toggleBounce(marker) {
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-        } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-}
 function startBounce(marker) {
     marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+        marker.setAnimation(null)
+    }, 5000);
+
 }
-function stopBounce(marker) {
-    marker.setAnimation(null);
-}
+
 
 // opens infowindow abov marker
 function populateInfoWindow(marker, infowindow) {
@@ -588,17 +582,25 @@ function showListings() {
     var bounds = new google.maps.LatLngBounds();
         // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
-     markers[i].setMap(map);
-     bounds.extend(markers[i].position);
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds);
 }
 
 function fit_map(loc){
-    hideListings();
-    for(var i=0;i<loc.length;i++){
-        markers[loc[i].index].setVisible(true);
+    if (loc.length <= 1) {
+        showList(loc[0]);
+    } else {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i=0 ; i < loc.length ; i++) {
+            markers[loc[i].index].setVisible(true);
+            bounds.extend(markers[loc[i].index].getPosition());
+        }
+        map.fitBounds(bounds);
     }
+
+
 }
 
 // shows a specific location on a map
@@ -613,7 +615,7 @@ function showList(loc){
 // This function will loop through the listings and hide them all.
 function hideListings() {
     for (var i = 0; i < markers.length; i++) {
-    markers[i].setVisible(false);
+        markers[i].setVisible(false);
     }
 }
 
@@ -771,6 +773,7 @@ function ViewModel() {
 
         //Finally set mylocations observable with the new data.
         self.mylocations(result_locations);
+        hideListings();
         fit_map(result_locations);
     };
 
