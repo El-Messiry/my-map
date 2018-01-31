@@ -22,19 +22,14 @@ var polygon = null ;
 var locations = [
   {index:0 ,title: 'Starbucks Coffee', location: {lat: 30.040973, lng: 31.475741}},
   {index:1 ,title: 'Cold Stone', location: {lat: 30.040249, lng: 31.475451}},
-  {index:2 ,title: 'Cafe Supreme River walk', location: {lat: 30.037899, lng: 31.475387}},
-  {index:3 ,title: 'The Tap East', location: {lat: 30.045487, lng: 31.476148}},
-  {index:4 ,title: 'Banque Misr', location: {lat: 30.042252, lng: 31.475343}},
-  {index:5 ,title: 'National Bank of Egypt', location: {lat: 30.041997, lng: 31.475568}},
-  {index:6 ,title: 'The Water Way', location: {lat: 30.041517, lng: 31.476905}},
-  {index:7 ,title: 'The Mood cafe', location: {lat: 30.029554, lng: 31.496346}},
-  {index:8 ,title: 'Cafe Supreme Maxim Mall', location: {lat: 30.029266, lng: 31.497097}},
-  {index:9 ,title: 'spinneys', location: {lat: 30.029953, lng: 31.496904}},
-  {index:10 ,title: 'Future University in Cairo (FUE)', location: {lat: 30.027231,lng: 31.491669}},
-  {index:11 ,title: 'American University in Cairo (AUC)', location: {lat: 30.023942,lng: 31.497278}},
-  {index:12 ,title: 'Dunkin Donuts Galeria Mall', location: {lat: 30.025047, lng: 31.489843}},
-  {index:13 ,title: 'Golds GYM', location: {lat: 30.024991, lng: 31.483760}}
+  {index:2 ,title: 'Cafe Supreme', location: {lat: 30.037899, lng: 31.475387}},
+  {index:3 ,title: 'Banque Misr', location: {lat: 30.042252, lng: 31.475343}},
+  {index:4 ,title: 'Cafe Supreme', location: {lat: 30.029266, lng: 31.497097}},
+  {index:5 ,title: 'spinneys', location: {lat: 30.029953, lng: 31.496904}},
+  {index:6 ,title: 'Dunkin Donuts', location: {lat: 30.025047, lng: 31.489843}},
+  {index:7 ,title: 'Golds GYM', location: {lat: 30.024991, lng: 31.483760}}
 ];
+
 
 // initialize map
 function initMap() {
@@ -458,6 +453,8 @@ function initMap() {
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
             position: position,
+            lat:locations[i].location.lat,
+            lng:locations[i].location.lng,
             title: title,
             animation: google.maps.Animation.DROP,
             icon: defaultIcon,
@@ -466,21 +463,19 @@ function initMap() {
         // Push the marker to our array of markers.
         markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
-        marker.addListener('click', function() {
-            populateInfoWindow( this, largeInfowindow);
-        });
         // Two event listeners - one for mouseover, one for mouseout,
         // to change the colors back and forth.
         marker.addListener('mouseover', function() {
             this.setIcon(highlightedIcon);
+            populateInfoWindow( this, largeInfowindow);
             });
         marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
             });
+
         marker.addListener('click', function(){
             startBounce(this);
-
-
+            populateInfoWindow( this, largeInfowindow);
         });
 
 
@@ -520,59 +515,60 @@ function initMap() {
 function startBounce(marker) {
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
-        marker.setAnimation(null)
+        marker.setAnimation(null);
     }, 5000);
 
 }
 
 
+
 // opens infowindow abov marker
 function populateInfoWindow(marker, infowindow) {
-    // Check to make sure the infowindow is not already opened on this marker.
-    function getStreetView(data, status){
-        // In case the status is OK, which means the pano was found, compute the
-        // position of the streetview image, then calculate the heading, then get a
-        // panorama from that and set the options
-        if (status == google.maps.StreetViewStatus.OK) {
-            var nearStreetViewLocation = data.location.latLng;
-            var heading = google.maps.geometry.spherical.computeHeading(
-            nearStreetViewLocation, marker.position);
-            infowindow.setContent('<div><strong>' + marker.title + '<strong></div><div id="infowindow-pano"></div>');
-            var panoramaOptions = {
-                position: nearStreetViewLocation,
-                pov: {
-                    heading: heading,
-                    pitch: 20
-                }
-            };
-            var panorama = new google.maps.StreetViewPanorama(
-            document.getElementById('infowindow-pano'), panoramaOptions);
-
-
-        } else {
-             infowindow.setContent('<div>' + marker.title + '</div>' +
-             '<div>No Street View Found</div>');
-        }
-    }
     if (infowindow.marker != marker) {
-        // Clear the infowindow content to give the streetview time to load.
         infowindow.setContent('');
         infowindow.marker = marker;
-        // Make sure the marker property is cleared if the infowindow is closed.
-        infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
+        curr_iw = infowindow;
+
+        // Foursquare API Client
+        cID = "R2DSLODKF4EYXEPOCHXXMOQA3EN0PRIGCLR0M5YNVYHRIIH3";
+        cSecret ="LI2VFLBWAIUFFXNKKEUHJK4GH0E4RSIOC0RQSRQ2FDCHFW54";
+        // URL for Foursquare API
+        var fs_url = 'https://api.foursquare.com/v2/venues/search?ll=' +
+            marker.lat + ',' + marker.lng + '&client_id=' + cID +
+            '&client_secret=' + cSecret + '&v=20171212&radius=50&query='+marker.title;
+
+        $.getJSON(fs_url).done(function(marker) {
+            console.log(marker);
+            var response = marker.response.venues[0];
+            var street = response.location.formattedAddress[0];
+            var city = response.location.formattedAddress[1];
+            var country = response.location.formattedAddress[3];
+
+            var html_content ='<div class="fs-container">' +
+            '<h3 class="infowindow-title">' + response.name + '</h3>'+
+            '<div class="fs-info-container">' +
+            '<h5 class="infowindow-address"> Address: </h5>' +
+            '<p class="infowindow-address">' + street + '</p>' +
+            '<p class="infowindow-address">' + city + '</p>' +
+            '<p class="infowindow-address">' + country +
+            '</p>' + '</div>' + '</div>';
+            infowindow.setContent(html_content);
+        }).fail(function() {
+            // Send alert
+            infowindow.setContent(
+                "Error loading the Foursquare API"
+            );
         });
-        var streetViewService = new google.maps.StreetViewService();
-        var radius = 200;
-        // Use streetview service to get the closest streetview image within
-        // 50 meters of the markers position
-        streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
 
-        /* implement AJAX request to WikiPedia */
-
-        // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
-        }
+
+
+        infowindow.addListener('closeclick', function() {
+            infowindow.close();
+        });
+
+    }
+
 }
 
 
@@ -588,6 +584,7 @@ function showListings() {
     map.fitBounds(bounds);
 }
 
+//fit map to bounds on search.
 function fit_map(loc){
     if (loc.length <= 1) {
         showList(loc[0]);
@@ -605,6 +602,7 @@ function fit_map(loc){
 
 // shows a specific location on a map
 function showList(loc){
+
     // Extend the boundaries of the map for each marker and display the marker
     markers[loc.index].setVisible(true);
     map.setZoom(17);
