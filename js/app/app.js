@@ -594,13 +594,24 @@ function showListings() {
     map.fitBounds(bounds);
 }
 
+function fit_map(loc){
+    var bounds = new google.maps.LatLngBounds();
+        // Extend the boundaries of the map for each marker and display the marker
+    for (var i = 0; i < loc.length; i++) {
+     markers[loc[i].index].setMap(map);
+     bounds.extend(markers[loc[i].index].position);
+    }
+    map.fitBounds(bounds);
+
+}
+
 // shows a specific location on a map
 function showList(loc){
     // Extend the boundaries of the map for each marker and display the marker
     markers[loc.index].setMap(map);
     map.setZoom(17);
     map.panTo(markers[loc.index].position);
-    startBounce(markers[loc.index]);
+
 }
 
 // This function will loop through the listings and hide them all.
@@ -765,6 +776,7 @@ function ViewModel() {
 
         //Finally set mylocations observable with the new data.
         self.mylocations(result_locations);
+        fit_map(result_locations);
     };
 
     self.wiki_links = ko.observableArray([]);
@@ -790,6 +802,10 @@ function ViewModel() {
                 };
 
                 clearTimeout(wikiRequestTimeout);
+            },
+            error: function() {
+                self.wiki_links.removeAll();
+                self.wiki_links.push('<li>error while loading wiki Links</li>');
             }
         });
     };
@@ -821,8 +837,8 @@ function ViewModel() {
                 var panorama = new google.maps.StreetViewPanorama(
                 document.getElementById('mypano'), panoramaOptions);
             } else {
-                self.info_window('<div>' + marker.title + '</div>' +
-                '<div>No Street View Found</div>');
+                self.info_window('<div class="pano-title"><strong>'+ marker.title + '<strong></div>' +
+                '<div id="mypano">No Street View Found</div>');
             }
         }
         // Use streetview service to get the closest streetview image within
@@ -837,11 +853,13 @@ function ViewModel() {
             console.log("nothing found");
         }
         else{
+            self.get_wikiArticles(data);
+            self.open_pano(data);
             $('.window-container').addClass('show-window');
             hideListings();
             showList(data);
-            self.get_wikiArticles(data);
-            self.open_pano(data);
+            startBounce(markers[data.index]);
+
         }
     };
 
