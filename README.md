@@ -14,14 +14,18 @@ and finally using some 3rd party API using **`(AJAX`**/**`getJSON`**)
 - Responsive design 
 - search feature non-case sensetive 
 - search while typing
-- streetview imagery if exists
-- added Custom binding `enterkey` 
+- streetview panorama if exists
+- added Custom binding `enterkey` for search box
+- Foursquare data regarding location if  exist
+- wikipedia articles related to location if exist
+
 
 <hr>
 
 ### Contents:
 
 - **`index.html`** contains HTML elements 
+- **`markers.js`** contains all the markers & styles of the map
 - **`app.js`** contains all the scripts needed for the app to run
 - **`libs/Jquery`** Jquery library used by app.js
 - **`libs/KnockoutJS`** Knockout library used by app.js
@@ -50,5 +54,6 @@ and finally using some 3rd party API using **`(AJAX`**/**`getJSON`**)
 
  - open the hamburger menu and select what ever you want.
  - in the search box you can type and substring  and options gets narrowed automatically 
- - on click the Panoramic view will pop up a window feel free to have a look 
+ - on click the Panoramic view will pop up a window feel free to have a look along with related Wikipedia articles
  - exit window then the location on map is displayed.
+ - location will be displayed , on click info window appears with data from Foursquare API showing the ( category - street - city - country )
